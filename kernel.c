@@ -26,17 +26,11 @@ struct sbiret sbi_call(long arg0, long arg1, long arg2, long arg3, long arg4,
 
 void putchar(char ch) { sbi_call(ch, 0, 0, 0, 0, 0, 0, 1); }
 
-void *memset(void *buf, char c, size_t n) {
-  uint8_t *p = (uint8_t *)buf;
-  while (n--) //  n is used, and then decremented -> 'post-decrement operator'
-    *p++ = c; // *p is used, and then incremented -> 'post-increment operator'
-  return buf;
-}
-
 void kernel_main(void) {
   memset(__bss, 0, (size_t)__bss_end - (size_t)__bss); // TODO: why?
 
-  mini_printf("Hallo! %x", 0xb5);
+  mini_printf("Hello, %s!\n", "world");
+  mini_printf("%s, %d\n", "0xdeadbeef", 2 + 4);
 
   for (;;)
     __asm__ __volatile__("wfi" ::);
